@@ -1,0 +1,20 @@
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+$container = (new \DI\ContainerBuilder())
+    ->addDefinitions([
+        \Core\View\ViewRenderer::class => include __DIR__ . '/config/view.php',
+    ])
+    ->build();
+
+$arguments = $argv ?? [];
+
+try {
+    \Core\Runner::boot(
+        basePath: __DIR__ . '/',
+        container: $container
+    )->run($arguments);
+} catch (\Throwable $e) {
+    echo "\e[0;30;41m ✕ Error \e[0m \e[0;31m" . $e->getMessage() . "\e[0m" . PHP_EOL;
+}
