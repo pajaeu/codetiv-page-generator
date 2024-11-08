@@ -1,6 +1,5 @@
 {
-	"name": "pajaeu/static-page-generator",
-	"type": "project",
+	"name": "pajaeu/codetiv-page-generator",
 	"autoload": {
 		"psr-4": {
 			"Core\\": "src/Core/",
