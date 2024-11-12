@@ -5,12 +5,12 @@ namespace App;
 use Core\Http\Page;
 use Core\Http\Responses\View;
 
-class Home
+class Home extends Base
 {
 
     #[Page(path: '/')]
     public function index(): View
     {
-        return new View('home', title: 'Hello World');
+        return $this->view('home.index', title: 'Hello World!');
     }
 }
