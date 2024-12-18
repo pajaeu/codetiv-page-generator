@@ -27,4 +27,5 @@ function watchFiles() {
 const build = gulp.series(compileSass, jsScripts);
 
 exports.watch = watchFiles;
-exports.default = build;
+exports.build = build;
+exports.default = gulp.series(build, watchFiles);
