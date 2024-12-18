@@ -8,14 +8,14 @@ function compileSass() {
         .pipe(sass().on('error', sass.logError))
         .pipe(cleanCSS())
         .pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest('build/css'));
+        .pipe(gulp.dest('public/build/css'));
 }
 
 function minifyCss() {
     return gulp.src('resources/css/*.css')
         .pipe(cleanCSS())
         .pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest('build/css'));
+        .pipe(gulp.dest('public/build/css'));
 }
 
 function watchFiles() {
