@@ -1,16 +1,16 @@
 <?php
 
-namespace App;
+namespace App\Pages;
 
 use Core\Http\Page;
 use Core\Http\Responses\View;
 
-class Home extends Base
+class Home
 {
 
     #[Page(path: '/')]
     public function index(): View
     {
-        return $this->view('home.index', title: 'Hello World!');
+        return new View('home.index', title: 'Hello World!');
     }
 }
