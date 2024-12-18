@@ -1,6 +1,7 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass')(require('sass'));
 const cleanCSS = require('gulp-clean-css');
+const jsMinify = require('gulp-terser');
 const rename = require('gulp-rename');
 
 function compileSass() {
@@ -11,20 +12,19 @@ function compileSass() {
         .pipe(gulp.dest('public/build/css'));
 }
 
-function minifyCss() {
-    return gulp.src('resources/css/*.css')
-        .pipe(cleanCSS())
+function jsScripts() {
+    return gulp.src('resources/js/*.js')
+        .pipe(jsMinify())
         .pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest('public/build/css'));
+        .pipe(gulp.dest('public/build/js'));
 }
 
 function watchFiles() {
     gulp.watch('resources/scss/*.scss', compileSass);
-    gulp.watch('resources/css/*.css', minifyCss);
+    gulp.watch('resources/js/*.js', jsScripts);
 }
 
-const build = gulp.series(compileSass, watchFiles);
+const build = gulp.series(compileSass, jsScripts);
 
-exports.sass = compileSass;
 exports.watch = watchFiles;
 exports.default = build;
