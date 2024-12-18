@@ -1,0 +1,33 @@
+.txt-center {
+	text-align: center;
+}
+
+.txt-left {
+	text-align: left;
+}
+
+.txt-right {
+	text-align: right;
+}
+
+.font-light {
+	font-weight: 300;
+}
+
+.font-normal {
+	font-weight: 400;
+}
+
+.font-bold {
+	font-weight: 700;
+}
+
+.txt-truncate {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.no-underline {
+	text-decoration: none;
+}

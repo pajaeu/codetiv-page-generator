@@ -1,0 +1,45 @@
+$spacing-scale: (
+		0: 0,
+		1: 0.25rem,
+		2: 0.5rem,
+		3: 0.75rem,
+		4: 1rem,
+		5: 1.5rem,
+		6: 2rem,
+		8: 3rem,
+		10: 4rem,
+);
+
+$directions: (
+		t: top,
+		b: bottom,
+		l: left,
+		r: right,
+		x: left right,
+		y: top bottom,
+		a: all
+);
+
+@each $key, $value in $spacing-scale {
+	@each $abbr, $dir in $directions {
+		.m#{$abbr}-#{$key} {
+			@if $dir == all {
+				margin: $value;
+			} @else {
+				margin-#{$dir}: $value;
+			}
+		}
+	}
+}
+
+@each $key, $value in $spacing-scale {
+	@each $abbr, $dir in $directions {
+		.p#{$abbr}-#{$key} {
+			@if $dir == all {
+				padding: $value;
+			} @else {
+				padding-#{$dir}: $value;
+			}
+		}
+	}
+}

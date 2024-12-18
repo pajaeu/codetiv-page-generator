@@ -1,0 +1,55 @@
+$display-properties: (
+		d-none: none,
+		d-block: block,
+		d-inline: inline,
+		d-inline-block: inline-block,
+		d-flex: flex,
+		d-inline-flex: inline-flex,
+		d-grid: grid,
+		d-inline-grid: inline-grid,
+		d-table: table,
+		d-table-row: table-row,
+		d-table-cell: table-cell,
+);
+
+$breakpoints: (
+		sm: 576px,
+		md: 768px,
+		lg: 992px,
+		xl: 1200px,
+);
+
+@each $class, $value in $display-properties {
+	.#{$class} {
+		display: $value;
+	}
+}
+
+
+.hidden {
+	display: none !important;
+}
+
+.visible {
+	display: inherit !important;
+}
+
+@each $bp, $size in $breakpoints {
+	@media (min-width: #{$size}) {
+		.hidden-#{$bp} {
+			display: none !important;
+		}
+		.visible-#{$bp} {
+			display: inherit !important;
+		}
+	}
+
+	@media (max-width: calc(#{$size} - 0.02px)) {
+		.hidden-max-#{$bp} {
+			display: none !important;
+		}
+		.visible-max-#{$bp} {
+			display: inherit !important;
+		}
+	}
+}

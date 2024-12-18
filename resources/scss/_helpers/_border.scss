@@ -1,0 +1,31 @@
+.border {
+	border: 1px solid #ddd;
+}
+
+.border-0 {
+	border: none;
+}
+
+.border-t {
+	border-top: 1px solid #ddd;
+}
+
+.border-b {
+	border-bottom: 1px solid #ddd;
+}
+
+.rounded {
+	border-radius: 0.25rem;
+}
+
+.rounded-sm {
+	border-radius: 0.125rem;
+}
+
+.rounded-lg {
+	border-radius: 0.5rem;
+}
+
+.rounded-full {
+	border-radius: 9999px;
+}
