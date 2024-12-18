@@ -15,7 +15,6 @@ class Runner
 {
 
 	public static Runner $instance;
-	private SiteConfig $config;
 
 	public function __construct(
 		public string $basePath,
@@ -23,8 +22,6 @@ class Runner
 	)
 	{
 		self::$instance = $this;
-
-		$this->config = $this->container->get(SiteConfig::class);
 	}
 
 	public static function get(?string $key = null)
@@ -58,7 +55,7 @@ class Runner
 
 	private function cleanup(array $args = []): void
 	{
-		$directory = $this->basePath . $this->config->getSiteDir();
+		$directory = $this->basePath . 'public';
 
 		if (in_array('content', $args)) {
 			echo "\e[0;30;43m ✓ Including content directory \e[0m" . PHP_EOL;
@@ -92,7 +89,7 @@ class Runner
 
 	private function generateHtaccess(): void
 	{
-		$file = $this->basePath . $this->config->getSiteDir() . '/.htaccess';
+		$file = $this->basePath . 'public/.htaccess';
 
 		$content = <<<HTACCESS
         ErrorDocument 404 /404.html
@@ -125,8 +122,6 @@ class Runner
             </html>
             HTML;
 
-			$file = $this->basePath . $this->config->getSiteDir() . '/' . $code . '.html';
-
 			/** @var ViewRenderer $renderer */
 			$renderer = $this->container->get(ViewRenderer::class);
 
@@ -135,6 +130,8 @@ class Runner
 			if (file_exists($template)) {
 				$content = $renderer->render($code);
 			}
+
+			$file = $this->basePath . 'public' . $code . '.html';
 
 			file_put_contents($file, $content);
 		}
@@ -166,7 +163,7 @@ class Runner
 
 				$fileName = $uri === '/' ? '/index.html' : $uri. '/index.html';
 
-				$file = $this->basePath . $this->config->getSiteDir() . $fileName;
+				$file = $this->basePath . 'public' . $fileName;
 
 				try {
 					$response = $routeRunner->dispatch($uri);
