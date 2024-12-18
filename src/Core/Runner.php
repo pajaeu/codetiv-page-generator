@@ -8,6 +8,7 @@ use Core\Data\Provider;
 use Core\Http\Page;
 use Core\Http\RouteLoader;
 use Core\Http\RouteRunner;
+use Core\View\ViewRenderer;
 use Psr\Container\ContainerInterface;
 
 class Runner
@@ -74,6 +75,73 @@ class Runner
 
 	private function build(): void
 	{
+		$this->generateHtaccess();
+
+		$this->generateErrorPages();
+
+		$this->generateSite();
+	}
+
+	private function help(): void
+	{
+		echo "\e[0;30;43mUsage: php generate [command]\e[0m" . PHP_EOL;
+		echo "Available commands:" . PHP_EOL;
+		echo "  \e[0;32mbuild\e[0m - Build the site" . PHP_EOL;
+		echo "  \e[0;31mcleanup\e[0m - Cleanup the site" . PHP_EOL;
+	}
+
+	private function generateHtaccess(): void
+	{
+		$file = $this->basePath . $this->config->getSiteDir() . '/.htaccess';
+
+		$content = <<<HTACCESS
+        ErrorDocument 404 /404.html
+        ErrorDocument 500 /500.html
+        HTACCESS;
+
+		file_put_contents($file, $content);
+	}
+
+	private function generateErrorPages(): void
+	{
+		$errorPages = [
+			'404' => 'Not Found',
+			'500' => 'Internal Server Error',
+		];
+
+		foreach ($errorPages as $code => $message) {
+			$content = <<<HTML
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>$code $message</title>
+            </head>
+            <body>
+                <h1>$code $message</h1>
+            </body>
+            </html>
+            HTML;
+
+			$file = $this->basePath . $this->config->getSiteDir() . '/' . $code . '.html';
+
+			/** @var ViewRenderer $renderer */
+			$renderer = $this->container->get(ViewRenderer::class);
+
+			$template = $renderer->getTemplatePath($code);
+
+			if (file_exists($template)) {
+				$content = $renderer->render($code);
+			}
+
+			file_put_contents($file, $content);
+		}
+	}
+
+	private function generateSite(): void
+	{
 		$routes = (new RouteLoader())->load();
 
 		/** @var RouteRunner $routeRunner */
@@ -118,25 +186,7 @@ class Runner
 					echo "\e[0;30;41m ✕ Error generating \e[0m $uri\e[0m \e[0;31m" . $e->getMessage() . "\e[0m" . PHP_EOL;
 				}
 			}
-
-			$assetsDirectory = $this->basePath . $this->config->getSiteDir() . '/' . $this->config->getAssetsDir();
-
-			if (!is_dir($assetsDirectory)) {
-				mkdir($assetsDirectory, recursive: true);
-			}
-
-			$resourcesDirectory = $this->basePath . $this->config->getResourcesDir();
-
-			$this->_copyDirectory($resourcesDirectory, $assetsDirectory);
 		}
-	}
-
-	private function help(): void
-	{
-		echo "\e[0;30;43mUsage: php generate [command]\e[0m" . PHP_EOL;
-		echo "Available commands:" . PHP_EOL;
-		echo "  \e[0;32mbuild\e[0m - Build the site" . PHP_EOL;
-		echo "  \e[0;31mcleanup\e[0m - Cleanup the site" . PHP_EOL;
 	}
 
 	private function deleteDirectory(string $directory): void
@@ -154,15 +204,6 @@ class Runner
 		}
 
 		rmdir($directory);
-	}
-
-	private function copyDirectory(string $source, string $destination): void
-	{
-		if (!is_dir($destination)) {
-			mkdir($destination, recursive: true);
-		}
-
-		$this->_copyDirectory($source, $destination);
 	}
 
 	private function getCommand(array $arguments)
@@ -196,26 +237,5 @@ class Runner
 		}
 
 		return $uri;
-	}
-
-	/**
-	 * @param string $source
-	 * @param string $destination
-	 * @return void
-	 */
-	private function _copyDirectory(string $source, string $destination): void
-	{
-		$files = array_diff(scandir($source), ['.', '..']);
-
-		foreach ($files as $file) {
-			$sourcePath = $source . '/' . $file;
-			$destinationPath = $destination . '/' . $file;
-
-			if (is_dir($sourcePath)) {
-				$this->copyDirectory($sourcePath, $destinationPath);
-			} else {
-				copy($sourcePath, $destinationPath);
-			}
-		}
 	}
 }

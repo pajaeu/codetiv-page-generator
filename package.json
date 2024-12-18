@@ -1,0 +1,21 @@
+{
+  "name": "codetiv-page-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "start": "gulp",
+    "build": "gulp build"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^5.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^6.0.0"
+  },
+  "dependencies": {
+    "sass": "^1.83.0"
+  }
+}

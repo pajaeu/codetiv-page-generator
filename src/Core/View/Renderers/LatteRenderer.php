@@ -28,8 +28,13 @@ final readonly class LatteRenderer implements ViewRenderer
         return $this->latte->renderToString($path, $data);
     }
 
-    private function resolvePath(string $template): string
-    {
-        return sprintf('%s/%s.latte', $this->viewPath, str_replace('.', '/', $template));
-    }
+	public function getTemplatePath(string $template): string
+	{
+		return $this->resolvePath($template);
+	}
+
+	private function resolvePath(string $template): string
+	{
+		return sprintf('%s/%s.latte', $this->viewPath, str_replace('.', '/', $template));
+	}
 }

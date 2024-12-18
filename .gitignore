@@ -1,2 +1,7 @@
 vendor
+node_modules
+.idea
+.env
 composer.lock
+package-lock.json
+.DS_Store
