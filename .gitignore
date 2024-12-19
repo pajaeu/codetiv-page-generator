@@ -1,8 +1,12 @@
-vendor
-node_modules
-build
-.idea
+/vendor
+/node_modules
+/public/build
 .env
 composer.lock
 package-lock.json
 .DS_Store
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
